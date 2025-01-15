@@ -27,7 +27,7 @@ st.title("Dashboard Penyewaan Sepeda")
 
 st.sidebar.header("Menu")
 option = st.sidebar.selectbox("Pilih Analisis:", 
-                               ("Rata-rata Penyewaan Sepeda", "Visualisasi Musim", "Penyewaan Hari Libur vs Hari Biasa"))
+                               ("Rata-rata Penyewaan Sepeda", "tren penyewaan sepeda dari tahun ke tahun", "Penyewaan Hari Libur vs Hari Biasa"))
 
 data_path = "all_data.csv"
 all_data = pd.read_csv(data_path)
@@ -46,20 +46,28 @@ if option == "Rata-rata Penyewaan Sepeda":
     plt.grid(axis='y', color='pink')
     st.pyplot(fig)
 
-elif option == "Visualisasi Musim":
-    st.subheader("Visualisasi Penyewaan Sepeda Berdasarkan Musim")
-    
-    seasonal_rentals = all_data.groupby('season_x')['total_count_y'].sum().reset_index()  
+elif option == "tren penyewaan sepeda dari tahun ke tahun":
+    st.subheader("Persentase penyewaan sepeda dari tahun ke tahun")
 
-    fig, ax = plt.subplots(figsize=(8, 8)) 
-    wedges, texts, autotexts = ax.pie(seasonal_rentals['total_count_y'], 
-                                       labels=seasonal_rentals['season_x'], 
-                                       autopct='%1.1f%%', startangle=90,
-                                       colors=sns.color_palette('Set2', len(seasonal_rentals)))
-    centre_circle = plt.Circle((0, 0), 0.70, fc='white')
-    fig.gca().add_artist(centre_circle)
-    plt.title("Penyewaan Sepeda Berdasarkan Musim", fontsize=16, color='purple')
-    plt.axis('equal') 
+    # Mengelompokkan data berdasarkan tahun dan menghitung total penyewaan sepeda per tahun
+    yearly_rentals = df_day.groupby('year')['total_count'].sum().reset_index()
+    yearly_rentals['year'] = yearly_rentals['year'].replace({0: 2011, 1: 2012})
+    total_rentals = yearly_rentals['total_count'].sum()
+
+    # Menambahkan kolom persentase untuk setiap tahun
+    yearly_rentals['percentage'] = (yearly_rentals['total_count'] / total_rentals) * 100
+
+    # Membuat visualisasi bar chart
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.barplot(x='year', y='percentage', data=yearly_rentals, palette='Set2', ax=ax)
+
+    # Menambahkan detail pada plot
+    ax.set_title('Persentase Penyewaan Sepeda dari Tahun ke Tahun', fontsize=16, color='purple')
+    ax.set_xlabel('Tahun', fontsize=12)
+    ax.set_ylabel('Persentase Penyewaan Sepeda (%)', fontsize=12)
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+
+    # Menampilkan plot di Streamlit
     st.pyplot(fig)
 
 elif option == "Penyewaan Hari Libur vs Hari Biasa":
