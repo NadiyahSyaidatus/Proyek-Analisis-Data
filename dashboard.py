@@ -50,7 +50,7 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
     st.subheader("Persentase penyewaan sepeda dari tahun ke tahun")
 
     # Mengelompokkan data berdasarkan tahun dan menghitung total penyewaan sepeda per tahun
-    yearly_rentals = df_day.groupby('year')['total_count'].sum().reset_index()
+    yearly_rentals = all_data.groupby('year')['total_count'].sum().reset_index()
     yearly_rentals['year'] = yearly_rentals['year'].replace({0: 2011, 1: 2012})
     total_rentals = yearly_rentals['total_count'].sum()
 
