@@ -35,28 +35,25 @@ all_data = pd.read_csv(data_path)
 
 if option == "Rata-rata Penyewaan Sepeda":
     st.subheader("Rata-rata Penyewaan Sepeda per Musim")
-    
+
     # Menghitung rata-rata penyewaan sepeda per musim
     seasonal_rentals = all_data.groupby('season_x')['total_count_y'].mean().reset_index()
 
-    # Membuat plot donat chart
-    fig, ax = plt.subplots(figsize=(8, 8))
-    wedges, texts, autotexts = ax.pie(
-        seasonal_rentals['total_count_y'], 
-        labels=seasonal_rentals['season_x'], 
-        autopct='%1.1f%%', 
-        startangle=90, 
-        colors=sns.color_palette('Set2', len(seasonal_rentals))
+    # Membuat bar chart horizontal
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.barplot(
+        y='season_x', 
+        x='total_count_y', 
+        data=seasonal_rentals, 
+        palette='Set2', 
+        ax=ax
     )
-    
-    # Menambahkan lingkaran di tengah untuk membuat grafik menjadi donat
-    centre_circle = plt.Circle((0, 0), 0.70, fc='white')
-    fig.gca().add_artist(centre_circle)
-    
-    # Pengaturan tambahan
-    plt.title("Rata-rata Penyewaan Sepeda per Musim", fontsize=16, color='purple')
-    plt.axis('equal')  # Menjaga proporsi grafik
-    
+
+    # Menambahkan label dan judul
+    ax.set_title("Rata-rata Penyewaan Sepeda per Musim", fontsize=16, color='purple')
+    ax.set_xlabel("Rata-rata Penyewaan", fontsize=12)
+    ax.set_ylabel("Musim", fontsize=12)
+
     # Menampilkan grafik ke Streamlit
     st.pyplot(fig)
 
