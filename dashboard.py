@@ -36,14 +36,20 @@ all_data = pd.read_csv(data_path)
 if option == "Rata-rata Penyewaan Sepeda":
     st.subheader("Rata-rata Penyewaan Sepeda per Musim")
     
-    seasonal_rentals = all_data.groupby('season_x')['total_count_y'].mean().reset_index() 
+    # Menghitung rata-rata penyewaan sepeda per musim
+    seasonal_rentals = all_data.groupby('season_x')['total_count_y'].mean().reset_index()
 
-    fig, ax = plt.subplots(figsize=(10, 6)) 
-    sns.barplot(x='season_x', y='total_count_y', data=seasonal_rentals, palette='Set2', ax=ax)
+    # Membuat plot line chart
+    fig, ax = plt.subplots(figsize=(10, 6))
+    sns.lineplot(x='season_x', y='total_count_y', data=seasonal_rentals, marker='o', color='purple', linewidth=2.5, ax=ax)
     plt.title("Rata-rata Penyewaan Sepeda per Musim", fontsize=16, color='purple')
     plt.xlabel("Musim", fontsize=12)
     plt.ylabel("Rata-rata Penyewaan Sepeda", fontsize=12)
-    plt.grid(axis='y', color='pink')
+    plt.grid(axis='y', color='pink', linestyle='--', linewidth=0.7)
+    plt.xticks(fontsize=10)
+    plt.yticks(fontsize=10)
+
+    # Menampilkan grafik ke Streamlit
     st.pyplot(fig)
 
 elif option == "tren penyewaan sepeda dari tahun ke tahun":
