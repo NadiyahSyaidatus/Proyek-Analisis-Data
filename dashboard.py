@@ -50,8 +50,8 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
     st.subheader("Persentase penyewaan sepeda dari tahun ke tahun")
 
     # Mengelompokkan data berdasarkan tahun dan menghitung total penyewaan sepeda per tahun
-    yearly_rentals = all_data.groupby('year')['total_count'].sum().reset_index()
-    yearly_rentals['year'] = yearly_rentals['year'].replace({0: 2011, 1: 2012})
+    yearly_rentals = all_data.groupby('year_x')['total_count'].sum().reset_index()
+    yearly_rentals['year_x'] = yearly_rentals['year_x'].replace({0: 2011, 1: 2012})
     total_rentals = yearly_rentals['total_count'].sum()
 
     # Menambahkan kolom persentase untuk setiap tahun
@@ -59,7 +59,7 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
 
     # Membuat visualisasi bar chart
     fig, ax = plt.subplots(figsize=(8, 6))
-    sns.barplot(x='year', y='percentage', data=yearly_rentals, palette='Set2', ax=ax)
+    sns.barplot(x='year_x', y='percentage', data=yearly_rentals, palette='Set2', ax=ax)
 
     # Menambahkan detail pada plot
     ax.set_title('Persentase Penyewaan Sepeda dari Tahun ke Tahun', fontsize=16, color='purple')
