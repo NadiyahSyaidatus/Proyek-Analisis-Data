@@ -39,18 +39,27 @@ if option == "Rata-rata Penyewaan Sepeda":
     # Menghitung rata-rata penyewaan sepeda per musim
     seasonal_rentals = all_data.groupby('season_x')['total_count_y'].mean().reset_index()
 
-    # Membuat plot line chart
-    fig, ax = plt.subplots(figsize=(10, 6))
-    sns.lineplot(x='season_x', y='total_count_y', data=seasonal_rentals, marker='o', color='purple', linewidth=2.5, ax=ax)
+    # Membuat plot donat chart
+    fig, ax = plt.subplots(figsize=(8, 8))
+    wedges, texts, autotexts = ax.pie(
+        seasonal_rentals['total_count_y'], 
+        labels=seasonal_rentals['season_x'], 
+        autopct='%1.1f%%', 
+        startangle=90, 
+        colors=sns.color_palette('Set2', len(seasonal_rentals))
+    )
+    
+    # Menambahkan lingkaran di tengah untuk membuat grafik menjadi donat
+    centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+    fig.gca().add_artist(centre_circle)
+    
+    # Pengaturan tambahan
     plt.title("Rata-rata Penyewaan Sepeda per Musim", fontsize=16, color='purple')
-    plt.xlabel("Musim", fontsize=12)
-    plt.ylabel("Rata-rata Penyewaan Sepeda", fontsize=12)
-    plt.grid(axis='y', color='pink', linestyle='--', linewidth=0.7)
-    plt.xticks(fontsize=10)
-    plt.yticks(fontsize=10)
-
+    plt.axis('equal')  # Menjaga proporsi grafik
+    
     # Menampilkan grafik ke Streamlit
     st.pyplot(fig)
+
 
 elif option == "tren penyewaan sepeda dari tahun ke tahun":
     st.subheader("Persentase penyewaan sepeda dari tahun ke tahun")
