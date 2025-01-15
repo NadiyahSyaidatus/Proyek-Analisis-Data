@@ -62,7 +62,7 @@ if option == "Rata-rata Penyewaan Sepeda":
 
 
 elif option == "tren penyewaan sepeda dari tahun ke tahun":
-    st.subheader("Persentase penyewaan sepeda dari tahun ke tahun")
+    st.subheader("Persentase Penyewaan Sepeda dari Tahun ke Tahun")
 
     # Mengelompokkan data berdasarkan tahun dan menghitung total penyewaan sepeda per tahun
     yearly_rentals = all_data.groupby('year_x')['total_count_y'].sum().reset_index()
@@ -72,9 +72,9 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
     # Menambahkan kolom persentase untuk setiap tahun
     yearly_rentals['percentage'] = (yearly_rentals['total_count_y'] / total_rentals) * 100
 
-    # Membuat visualisasi bar chart
+    # Membuat visualisasi line chart
     fig, ax = plt.subplots(figsize=(8, 6))
-    sns.barplot(x='year_x', y='percentage', data=yearly_rentals, palette='Set2', ax=ax)
+    sns.lineplot(x='year_x', y='percentage', data=yearly_rentals, marker='o', color='purple', ax=ax)
 
     # Menambahkan detail pada plot
     ax.set_title('Persentase Penyewaan Sepeda dari Tahun ke Tahun', fontsize=16, color='purple')
@@ -84,6 +84,7 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
 
     # Menampilkan plot di Streamlit
     st.pyplot(fig)
+
 
 elif option == "Penyewaan Hari Libur vs Hari Biasa":
     st.subheader("Penyewaan Sepeda pada Hari Libur vs Hari Biasa")
