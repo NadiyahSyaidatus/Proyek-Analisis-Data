@@ -72,18 +72,20 @@ elif option == "tren penyewaan sepeda dari tahun ke tahun":
     # Menambahkan kolom persentase untuk setiap tahun
     yearly_rentals['percentage'] = (yearly_rentals['total_count_y'] / total_rentals) * 100
 
-    # Membuat visualisasi line chart
+    # Membuat visualisasi pie chart
     fig, ax = plt.subplots(figsize=(8, 6))
-    sns.lineplot(x='year_x', y='percentage', data=yearly_rentals, marker='o', color='purple', ax=ax)
-
-    # Menambahkan detail pada plot
+    ax.pie(
+        yearly_rentals['percentage'],
+        labels=yearly_rentals['year_x'],
+        autopct='%1.1f%%',
+        startangle=90,
+        colors=['#66c2a5', '#fc8d62']
+    )
     ax.set_title('Persentase Penyewaan Sepeda dari Tahun ke Tahun', fontsize=16, color='purple')
-    ax.set_xlabel('Tahun', fontsize=12)
-    ax.set_ylabel('Persentase Penyewaan Sepeda (%)', fontsize=12)
-    ax.grid(axis='y', linestyle='--', alpha=0.7)
 
     # Menampilkan plot di Streamlit
     st.pyplot(fig)
+
 
 
 elif option == "Penyewaan Hari Libur vs Hari Biasa":
